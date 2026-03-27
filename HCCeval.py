@@ -44,6 +44,7 @@ def get_silhouette(profile, cluster, stepwise, pool) :
         dist_buf = 'file://{0}.dist'.format(file.name)
         dist2 = sa.create(dist_buf, dist.shape[:2], dist.dtype)
         dist2[:] = dist[:, :, 0] + dist[:, :, 0].T
+        np.fill_diagonal(dist2, 0)
         del dist
         logging.info('Calculating Silhouette score ...')
         silhouette = np.array(pool.map(get_silhouette2, [ [dist_buf, tag] for tag in cluster.T ]))
